@@ -31,7 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
     <body>
         <h2>Editar denuncia</h2>
-        <form action="editar_denuncia.php" method="POST" enctype="multipart/form-data">
+        <form id="formEditar" action="editar_denuncia.php" method="POST" enctype="multipart/form-data">
             <input type="hidden" name="id" value="<?php echo $row['id']; ?>">
             <label>Tipo<br>
                 <select name="tipo" required>
@@ -41,7 +41,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                     <option value="Contaminacion">Contaminación</option>
                 </select>
             </label><br>
-            <label>Descripción<br><textarea name="descripcion" required><?php echo htmlspecialchars($row['descripcion']); ?></textarea></label><br>
+            <label>Descripción<br><textarea id="descripcion" name="descripcion" 
+            placeholder="Ejemplo: Reporto un incendio en el bosque cercano al río, con mucho humo visible desde la carretera."
+            required><?php echo htmlspecialchars($row['descripcion']); ?></textarea></label><br>
             <label>Ubicación<br><input type="text" name="ubicacion" value="<?php echo htmlspecialchars($row['ubicacion']); ?>" required></label><br>
             <p>Imagen actual:<br><?php if ($row['imagen']) {
                                         echo "<img src='uploads/" . htmlspecialchars($row['imagen']) . "' width='180'>";
@@ -53,6 +55,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         </form>
         <p><a href="dashboard.php">Volver</a></p>
     </body>
+    <script>
+document.addEventListener('DOMContentLoaded', function () {
+    const form = document.getElementById('formEditar');
+    form.addEventListener('submit', function (e) {
+        const descripcion = document.getElementById('descripcion').value.trim();
+        const regex = /^[A-Za-z0-9\s.,;:¡!¿?áéíóúÁÉÍÓÚñÑ()\-]{10,}$/;
+
+        if (!regex.test(descripcion)) {
+            alert('La descripción debe tener al menos 10 caracteres y solo puede contener letras, números y signos básicos.');
+            e.preventDefault(); // Detener envío
+        }
+    });
+});
+</script>
 
     </html>
     <?php
@@ -84,6 +100,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $imagen = $imagen_actual;
     if (isset($_FILES['imagen']) && $_FILES['imagen']['error'] === UPLOAD_ERR_OK) {
+        $allowed = ['image/jpeg', 'image/png', 'image/gif'];
+        if (!in_array($_FILES['imagen']['type'], $allowed)) {
+            echo "Tipo de imagen no permitido.";
+            exit;
+        }
+        if ($_FILES['imagen']['size'] > 2 * 1024 * 1024) {
+            echo "Imagen demasiado grande (max 2MB).";
+            exit;
+        }
         $ext = pathinfo($_FILES['imagen']['name'], PATHINFO_EXTENSION);
         $nombreImg = time() . '_' . bin2hex(random_bytes(5)) . '.' . $ext;
         $dest = __DIR__ . '/uploads/' . $nombreImg;

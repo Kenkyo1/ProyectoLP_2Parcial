@@ -19,7 +19,7 @@ $usuario_nombre = $_SESSION['usuario_nombre'];
     <p><a href="logout.php">Cerrar sesión</a></p>
 
     <h2>Crear nueva denuncia</h2>
-    <form action="registrar_denuncia.php" method="POST" enctype="multipart/form-data">
+    <form id="formDenuncia" action="registrar_denuncia.php" method="POST" enctype="multipart/form-data">
         <label>Tipo<br>
             <select name="tipo" required>
                 <option value="">Seleccione...</option>
@@ -28,11 +28,29 @@ $usuario_nombre = $_SESSION['usuario_nombre'];
                 <option value="Contaminacion">Contaminación</option>
             </select>
         </label><br><br>
-        <label>Descripción<br><textarea name="descripcion" required></textarea></label><br><br>
+        <label>Descripción<br><textarea id="descripcion"
+        name="descripcion" 
+        placeholder="Ejemplo: Reporto un incendio en el bosque cercano al río, con mucho humo visible desde la carretera."
+        required></textarea></label><br><br>
         <label>Ubicación<br><input type="text" name="ubicacion" required></label><br><br>
         <label>Imagen (opcional)<br><input type="file" name="imagen" accept="image/*"></label><br><br>
         <button type="submit">Registrar denuncia</button>
     </form>
+
+    <script>
+     document.addEventListener('DOMContentLoaded', function () {
+            const form = document.getElementById('formDenuncia');
+            form.addEventListener('submit', function (e) {
+                const descripcion = document.getElementById('descripcion').value.trim();
+                const regex = /^[A-Za-z0-9\s.,;:¡!¿?áéíóúÁÉÍÓÚñÑ()\-]{10,}$/;
+
+                if (!regex.test(descripcion)) {
+                    alert('La descripción debe tener al menos 10 caracteres y solo puede contener letras, números y signos básicos.');
+                    e.preventDefault(); // Detener envío
+                }
+            });
+        });
+    </script>
 
     <h2>Mis denuncias</h2>
     <?php

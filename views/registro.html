@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="es">
+
+<head>
+  <meta charset="utf-8">
+  <title>Registro - Denuncias</title>
+</head>
+
+<body>
+  <h2>Registrar usuario</h2>
+  <form action="../public/registro.php" method="POST">
+    <label>Nombre completo<br><input type="text" name="nombre" required></label><br><br>
+    <label>Correo<br><input type="email" name="email" required></label><br><br>
+    <label>Contraseña<br><input type="password" name="password" required></label><br><br>
+    <button type="submit">Registrarse</button>
+  </form>
+  <p>¿Ya tienes cuenta? <a href="login.html">Inicia sesión</a></p>
+  <script>
+    function getQueryParam(param) {
+      const urlParams = new URLSearchParams(window.location.search);
+      return urlParams.get(param);
+    }
+
+    window.onload = function () {
+      const error = getQueryParam('error');
+      if (error === 'email_existe') {
+        alert('El correo ya está registrado');
+        history.replaceState(null, '', window.location.pathname);
+      } else if (error === 'sin_errores') {
+        alert('Registro exitoso');
+        history.replaceState(null, '', window.location.pathname);
+      }
+    };
+  </script>
+</body>
+
+</html>

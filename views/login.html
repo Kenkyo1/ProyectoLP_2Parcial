@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="es">
+
+<head>
+  <meta charset="utf-8">
+  <title>Login - Denuncias</title>
+</head>
+
+<body>
+  <h2>Iniciar sesión</h2>
+  <form action="../public/login.php" method="POST">
+    <label>Correo<br><input type="email" name="email" required></label><br><br>
+    <label>Contraseña<br><input type="password" name="password" required></label><br><br>
+    <button type="submit">Entrar</button>
+  </form>
+  <p>¿No tienes cuenta? <a href="registro.html">Regístrate</a></p>
+  <script>
+    function getQueryParam(param) {
+      const urlParams = new URLSearchParams(window.location.search);
+      return urlParams.get(param);
+    }
+
+    window.onload = function () {
+      const error = getQueryParam('error');
+      if (error === 'password_incorrecta') {
+        alert('La contraseña es incorrecta');
+        history.replaceState(null, '', window.location.pathname);
+      } else if (error === 'usuario_no_encontrado') {
+        alert('El usuario que ingreso no existe');
+        history.replaceState(null, '', window.location.pathname);
+      }
+    };
+  </script>
+</body>
+
+</html>

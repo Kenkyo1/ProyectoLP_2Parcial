@@ -1,6 +1,5 @@
 <?php
-// views/tab_vista_publica.php
-require '../config/auth.php';   // ajusta la ruta si tu estructura es distinta
+require '../config/auth.php'; 
 require_login();
 $usuario_nombre = $_SESSION['usuario_nombre'];
 ?>
@@ -131,9 +130,8 @@ $usuario_nombre = $_SESSION['usuario_nombre'];
     <div id="publicDenuncias" class="grid"></div>
   </div>
 
-  <!-- Rutas para el JS: ajusta API_BASE si tus endpoints están en otra carpeta -->
   <script>
-    window.API_BASE = "../public"; // <-- AJUSTA si tu ver_denuncias.php NO está en ../public
+    window.API_BASE = "../public";
   </script>
 
   <script src="../public/assets/js/vista_publica.js" defer></script>

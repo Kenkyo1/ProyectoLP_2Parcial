@@ -81,8 +81,8 @@ $usuario_nombre = $_SESSION['usuario_nombre'];
         <select name="tipo" required>
           <option value="">Seleccione...</option>
           <option value="Incendio">🔥 Incendio</option>
-          <option value="Minería Ilegal">⛏️ Minería Ilegal</option>
-          <option value="Contaminación">♻️ Contaminación</option>
+          <option value="Mineria Ilegal">⛏️ Minería Ilegal</option>
+          <option value="Contaminacion">♻️ Contaminación</option>
         </select>
 
         <label for="descripcion">Descripción</label>

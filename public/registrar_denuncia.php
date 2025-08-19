@@ -40,13 +40,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt->bind_param("issss", $usuario_id, $tipo, $descripcion, $ubicacion, $imagen);
 
     if ($stmt->execute()) {
-        header('Location: dashboard.php');
+        header('Location: ../views/dashboard.php');
         exit;
     } else {
         echo "Error al registrar denuncia: " . htmlspecialchars($conn->error);
     }
 } else {
-    header('Location: dashboard.php');
+    header('Location: ../views/dashboard.php');
     exit;
 }
 ?>

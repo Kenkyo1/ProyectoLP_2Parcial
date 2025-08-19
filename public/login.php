@@ -21,7 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (password_verify($password, $usuario['password'])) {
             $_SESSION['usuario_id'] = $usuario['id'];
             $_SESSION['usuario_nombre'] = $usuario['nombre'];
-            header("Location: dashboard.php");
+            header("Location: ../views/dashboard.php");
             exit;
         } else {
             # echo "Contraseña incorrecta.";

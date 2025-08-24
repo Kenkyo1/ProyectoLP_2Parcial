@@ -9,6 +9,7 @@ $usuario_nombre = $_SESSION['usuario_nombre'];
 <head>
   <meta charset="UTF-8">
   <title>Dashboard - Denuncias</title>
+  <link rel="stylesheet" href="../public/assets/css/lightbox.css">
   <style>
     body {
       font-family: 'Segoe UI', Arial, sans-serif;
@@ -251,5 +252,6 @@ $usuario_nombre = $_SESSION['usuario_nombre'];
   </script>
 
   <script src="../public/assets/js/mis_denuncias.js" defer></script>
+  <script src="../public/assets/js/lightbox.js" defer></script>
 </body>
 </html>

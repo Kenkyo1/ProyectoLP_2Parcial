@@ -1,0 +1,83 @@
+/* Estilos del visor flotante (lightbox) */
+#lightbox-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.65);
+  z-index: 9998;
+  justify-content: center;
+  align-items: center;
+}
+
+#lightbox-content {
+  background: #fff;
+  border-radius: 10px;
+  max-width: 90vw;
+  max-height: 90vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.4);
+  position: relative;
+  animation: fadeIn 0.25s ease;
+}
+
+#lightbox-close {
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  font-size: 22px;
+  font-weight: 700;
+  color: #444;
+  cursor: pointer;
+  background: #fff;
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  display: grid;
+  place-items: center;
+  line-height: 1;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+}
+
+#lightbox-close:hover { background: #f2f2f2; }
+
+/* Encabezado: "IMAGEN X DE N" */
+.lb-header {
+  padding: 12px 16px 4px;
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: #111;
+  text-align: center;
+}
+
+/* Subtítulo: "IMAGEN ADJUNTA A LA DENUNCIA DE [TIPO]" */
+.lb-subtitle {
+  padding: 0 16px 10px;
+  font-size: 0.92rem;
+  color: #333;
+  text-align: center;
+  border-bottom: 1px solid #eee;
+}
+
+/* Contenedor de imagen */
+.lb-media {
+  flex: 1;
+  min-height: 0; /* para que la img haga shrink bien */
+  display: grid;
+  place-items: center;
+  padding: 10px;
+}
+
+.lb-media img {
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.98); }
+  to { opacity: 1; transform: scale(1); }
+}

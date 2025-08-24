@@ -9,6 +9,7 @@ $usuario_nombre = $_SESSION['usuario_nombre'];
   <meta charset="UTF-8">
   <title>Vista Pública - Denuncias Ambientales</title>
   <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="stylesheet" href="../public/assets/css/lightbox.css">
   <style>
     body { font-family: 'Segoe UI', Arial, sans-serif; background: linear-gradient(135deg, #e8f9f3, #eaf4fb); margin: 0; }
     /* NAVBAR */
@@ -135,5 +136,6 @@ $usuario_nombre = $_SESSION['usuario_nombre'];
   </script>
 
   <script src="../public/assets/js/vista_publica.js" defer></script>
+  <script src="../public/assets/js/lightbox.js" defer></script>
 </body>
 </html>

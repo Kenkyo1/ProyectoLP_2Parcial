@@ -67,7 +67,7 @@ $usuario_nombre = $_SESSION['usuario_nombre'];
   <div class="tabs">
     <a href="dashboard.php">📄 Ver Denuncias</a>
     <a href="tab_nueva_denuncia.php" class="active">📍 Nueva Denuncia</a>
-    <a href="#">👤 Panel Admin</a>
+    <a href="admin_panel.php">👤 Panel Admin</a>
     <a href="tab_vista_publica.php">🌍 Vista Pública</a>
   </div>
 

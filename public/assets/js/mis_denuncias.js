@@ -117,7 +117,7 @@ function crearTarjeta(d) {
   actions.style.fontSize = '13px';
 
   const editLink = document.createElement('a');
-  editLink.href = `${API_BASE}/editar_denuncia.php?id=${encodeURIComponent(d.id)}`;
+  editLink.href = `editar_denuncia.php?id=${encodeURIComponent(d.id)}`;
   editLink.textContent = '✏️ Editar';
   editLink.style.marginRight = '12px';
 

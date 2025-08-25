@@ -4,6 +4,7 @@ require_login();
 $usuario_id = $_SESSION['usuario_id'];
 $usuario_nombre = $_SESSION['usuario_nombre'];
 ?>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -131,7 +132,7 @@ $usuario_nombre = $_SESSION['usuario_nombre'];
       padding: 18px;
       border-radius: 10px;
       text-align: center;
-      font-weight: bold;
+      font-weight: bold;  
       font-size: 16px;
     }
     .stat.total { color: #2980b9; }
@@ -198,7 +199,7 @@ $usuario_nombre = $_SESSION['usuario_nombre'];
   <div class="tabs">
     <a href="dashboard.php" class="active">📄 Ver Denuncias</a>
     <a href="tab_nueva_denuncia.php">📍 Nueva Denuncia</a>
-    <a href="#">👤 Panel Admin</a>
+    <a href="admin_panel.php">👤 Panel Admin</a>
     <a href="tab_vista_publica.php">🌍 Vista Pública</a>
   </div>
 

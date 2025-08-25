@@ -5,21 +5,26 @@ require '../config/conexion.php';
 
 $usuario_id = $_SESSION['usuario_id'];
 
-if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-    if (!isset($_GET['id'])) {
-        header('Location: dashboard.php');
-        exit;
-    }
-    $id = intval($_GET['id']);
-    $stmt = $conn->prepare("SELECT * FROM denuncias WHERE id = ? AND usuario_id = ?");
-    $stmt->bind_param("ii", $id, $usuario_id);
-    $stmt->execute();
-    $res = $stmt->get_result();
-    if ($res->num_rows !== 1) {
-        echo "Denuncia no encontrada o no tienes permiso.";
-        exit;
-    }
-    $row = $res->fetch_assoc();
+if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
+    header('Location: editar_denuncia.php?id=' . (isset($_GET['id']) ? intval($_GET['id']) : ''));
+    exit;
+}
+
+if (!isset($_GET['id'])) {
+    header('Location: dashboard.php');
+    exit;
+}
+
+$id = intval($_GET['id']);
+$stmt = $conn->prepare("SELECT * FROM denuncias WHERE id = ? AND usuario_id = ?");
+$stmt->bind_param("ii", $id, $usuario_id);
+$stmt->execute();
+$res = $stmt->get_result();
+if ($res->num_rows !== 1) {
+    echo "Denuncia no encontrada o no tienes permiso.";
+    exit;
+}
+$row = $res->fetch_assoc();
 ?>
 <!doctype html>
 <html lang="es">
@@ -66,10 +71,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
     form label { display:block; margin:12px 0 6px; font-weight:600; font-size:14px; }
     select, input[type="text"], textarea, input[type="file"] {
-      width:100%; padding:10px 12px; border-radius:8px; border:1px solid #d1d5db; font-size:14px;
+      width:95%; padding:10px 12px; border-radius:8px; border:1px solid #d1d5db; font-size:14px;
       background:#fff;
     }
-    textarea { min-height:110px; resize:vertical; }
+    textarea { min-height:110px; width: 95%; }
 
     .form-row { display:flex; gap:12px; align-items:center; flex-wrap:wrap; }
     .img-preview { margin-top:10px; max-width:220px; border-radius:8px; box-shadow:0 2px 8px rgba(0,0,0,0.06); }
@@ -98,7 +103,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
   <div class="navbar">
     <div class="logo">🛡️ <span>Denuncias Ambientales</span></div>
     <div class="right">
-      <a href="../views/dashboard.php" class="btn-secondary" style="text-decoration:none;padding:8px 12px;border-radius:8px;">← Volver al panel</a>
+      <a href="dashboard.php" class="btn-secondary" style="text-decoration:none;padding:8px 12px;border-radius:8px;">← Volver al panel</a>
     </div>
   </div>
 
@@ -107,12 +112,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
       <h2>✏️ Editar denuncia</h2>
       <p class="help">Modifica los campos que desees y presiona <strong>Actualizar</strong>. Si no subes nueva imagen, se mantiene la actual.</p>
 
-      <form id="formEditar" action="editar_denuncia.php" method="POST" enctype="multipart/form-data" class="mt-4">
+      <!-- FORMULARIO: ahora envía al archivo backend separado -->
+      <form id="formEditar" action="../public/editar_denuncia_action.php" method="POST" enctype="multipart/form-data" class="mt-4">
         <input type="hidden" name="id" value="<?php echo (int)$row['id']; ?>">
 
         <label for="tipo">Tipo</label>
         <select name="tipo" id="tipo" required>
-          <!-- La primera opción mantiene el valor actual pero preferimos mostrar las opciones estándar -->
           <option value="<?php echo htmlspecialchars($row['tipo']); ?>"><?php echo htmlspecialchars($row['tipo']); ?> (actual)</option>
           <option value="Incendio">Incendio</option>
           <option value="Mineria Ilegal">Minería ilegal</option>
@@ -130,7 +135,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
           <label>Imagen actual</label>
           <div>
             <?php if ($row['imagen']) : ?>
-              <img id="currentImage" src="uploads/<?php echo htmlspecialchars($row['imagen']); ?>" alt="Imagen actual" class="img-preview">
+              <img id="currentImage" src="../public/uploads/<?php echo htmlspecialchars($row['imagen']); ?>" alt="Imagen actual" class="img-preview">
             <?php else: ?>
               <div class="help">Sin imagen</div>
             <?php endif; ?>
@@ -143,7 +148,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
         <div class="actions">
           <button type="submit" class="btn-primary">Actualizar</button>
-          <a href="../views/dashboard.php" class="btn-secondary" style="text-decoration:none;display:inline-flex;align-items:center;justify-content:center;">Cancelar</a>
+          <a href="dashboard.php" class="btn-secondary" style="text-decoration:none;display:inline-flex;align-items:center;justify-content:center;">Cancelar</a>
           <div style="margin-left:auto;">
             <span class="small-badge info">ID: <?php echo (int)$row['id']; ?></span>
           </div>
@@ -154,72 +159,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
   </div>
 
   <script>
-    window.UPLOADS_PATH = 'uploads';
+    window.UPLOADS_PATH = '../public/uploads';
   </script>
 
   <script src="../public/assets/js/editar_denuncia.js" defer></script>
 </body>
 </html>
-
-<?php
-    exit;
-}
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $id = intval($_POST['id']);
-    $tipo = trim($_POST['tipo']);
-    $descripcion = trim($_POST['descripcion']);
-    $ubicacion = trim($_POST['ubicacion']);
-
-    if (empty($tipo) || empty($descripcion) || empty($ubicacion)) {
-        echo "Campos obligatorios faltantes.";
-        exit;
-    }
-
-    $stmt = $conn->prepare("SELECT imagen FROM denuncias WHERE id = ? AND usuario_id = ?");
-    $stmt->bind_param("ii", $id, $usuario_id);
-    $stmt->execute();
-    $res = $stmt->get_result();
-    if ($res->num_rows !== 1) {
-        echo "Denuncia no encontrada o sin permiso.";
-        exit;
-    }
-    $row = $res->fetch_assoc();
-    $imagen_actual = $row['imagen'];
-
-    $imagen = $imagen_actual;
-    if (isset($_FILES['imagen']) && $_FILES['imagen']['error'] === UPLOAD_ERR_OK) {
-        $allowed = ['image/jpeg', 'image/png', 'image/gif'];
-        if (!in_array($_FILES['imagen']['type'], $allowed)) {
-            echo "Tipo de imagen no permitido.";
-            exit;
-        }
-        if ($_FILES['imagen']['size'] > 2 * 1024 * 1024) {
-            echo "Imagen demasiado grande (max 2MB).";
-            exit;
-        }
-        $ext = pathinfo($_FILES['imagen']['name'], PATHINFO_EXTENSION);
-        $nombreImg = time() . '_' . bin2hex(random_bytes(5)) . '.' . $ext;
-        $dest = __DIR__ . '/uploads/' . $nombreImg;
-        if (move_uploaded_file($_FILES['imagen']['tmp_name'], $dest)) {
-            // delete old image
-            if ($imagen_actual && file_exists(__DIR__ . '/uploads/' . $imagen_actual)) {
-                @unlink(__DIR__ . '/uploads/' . $imagen_actual);
-            }
-            $imagen = $nombreImg;
-        } else {
-            echo "Error al guardar la nueva imagen.";
-            exit;
-        }
-    }
-
-    $stmt2 = $conn->prepare("UPDATE denuncias SET tipo = ?, descripcion = ?, ubicacion = ?, imagen = ? WHERE id = ? AND usuario_id = ?");
-    $stmt2->bind_param("ssssii", $tipo, $descripcion, $ubicacion, $imagen, $id, $usuario_id);
-    if ($stmt2->execute()) {
-        header('Location: ../views/dashboard.php');
-        exit;
-    } else {
-        echo "Error al actualizar: " . htmlspecialchars($conn->error);
-    }
-}
-?>

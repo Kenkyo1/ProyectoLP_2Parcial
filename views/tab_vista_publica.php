@@ -90,7 +90,7 @@ $usuario_nombre = $_SESSION['usuario_nombre'];
   <div class="tabs">
     <a href="dashboard.php">📄 Ver Denuncias</a>
     <a href="tab_nueva_denuncia.php">📍 Nueva Denuncia</a>
-    <a href="#">👤 Panel Admin</a>
+    <a href="admin_panel.php">👤 Panel Admin</a>
     <a href="tab_vista_publica.php" class="active">🌍 Vista Pública</a>
   </div>
 
@@ -107,25 +107,10 @@ $usuario_nombre = $_SESSION['usuario_nombre'];
         </select>
       </label>
 
-      <label>
-        <select id="estadoFilter">
-          <option value="Todos">Todos los estados</option>
-          <option value="Pendiente">Pendiente</option>
-          <option value="Validado">Validado</option>
-          <option value="Rechazado">Rechazado</option>
-        </select>
-      </label>
-
       <button id="refreshBtn" class="btn-refresh" title="Actualizar denuncias">↻ Actualizar</button>
 
       <div style="flex:1"></div>
 
-      <div class="stats" style="max-width:520px;">
-        <div class="stat"><strong id="totalCount">0</strong><small>Total</small></div>
-        <div class="stat"><strong id="validadosCount">0</strong><small>Validados</small></div>
-        <div class="stat"><strong id="pendientesCount">0</strong><small>Pendientes</small></div>
-        <div class="stat"><strong id="rechazadosCount">0</strong><small>Rechazados</small></div>
-      </div>
     </div>
 
     <div id="publicDenuncias" class="grid"></div>

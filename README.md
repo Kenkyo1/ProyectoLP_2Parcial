@@ -21,6 +21,7 @@
 4. Accede a `http://localhost:[puerto]/denuncias_backend/registro.html` para crear un usuario o `login.html` para iniciar sesión. En `[puerto]` debes ubicar el puerto que usa tu servidor, en caso de que hayas modificado el por defecto.
 5. Desde `dashboard.php` puedes crear, editar y eliminar tus denuncias, además de ver todas las denuncias públicas.
 6. Si trabajas con Visual Studio Code, abre la carpeta del proyecto y usa la extensión PHP Server o ejecuta XAMPP.
+7. Para acceder como usuario administrador, utilizar las siguientes credenciales email: admin@ecoalert.com y contraseña: AdminECOALERT_123
 
 ## Notas de seguridad y mejoras futuras
 - Las contraseñas usan `password_hash` y `password_verify`.
